@@ -25,7 +25,7 @@ public class ClienteDTO {
     private String cpf;
 
     @NotBlank(message = "O não pode estar em branco")
-    private String dataNascimento;
+    private LocalDate dataNascimento;
 
     @NotBlank(message = "O não pode estar em branco")
     private String logradouro;
