@@ -129,7 +129,7 @@ public class ClienteService {
         int numero = ThreadLocalRandom.current().nextInt(0, 10000000);
 
         // Converte o int diretamente para String
-        return String.format("%04d", numero);
+        return String.format("%06d", numero);
     }
 
     @Transactional(readOnly = true)
@@ -186,26 +186,37 @@ public class ClienteService {
 
         Cliente clienteAtualizado = clienteRepository.save(clienteExistente);
 
+        log.info("Dados do cliente com CPF: {} atualizados com sucesso.", cpf);
+
         return clienteAtualizado;
     }
 
     @Transactional
     public void softDeleteCliente(String cpf) {
+
         Cliente clienteExistente =
                 clienteRepository.findByCpf(cpf).orElseThrow(() -> new RuntimeException(ErrorEnum.CPF_INVALIDO.getErrorMessage()));
 
         clienteExistente.setStatus(false);
+
         clienteRepository.save(clienteExistente);
+
+        log.info("Cliente com CPF: {} foi desativado com sucesso (status = false).", cpf);
     }
 
     @Transactional
     public void reativarCliente(String cpf) {
+
         Cliente clienteExistente =
                 clienteRepository.findByCpf(cpf).orElseThrow(() -> new RuntimeException(ErrorEnum.CPF_INVALIDO.getErrorMessage()));
 
         if (!clienteExistente.isStatus()) {
             clienteExistente.setStatus(true);
         }
+
+        clienteRepository.save(clienteExistente);
+        log.info("Cliente com CPF: {} foi reativado com sucesso (status = true).", cpf);
+
 
     }
 
