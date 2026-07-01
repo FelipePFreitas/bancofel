@@ -13,8 +13,8 @@ public enum ErrorEnum {
     DATA_NASCIMENTO_NULO_BRANCO(400, 5, "A data de nascimento não pode estar em branco ou nulo"),
     CEP_INVALIDO(400, 6, "CEP inválido"),
 
-    // Erros de Conta / Acesso Geral (Faixa 100-109)
-    NUMERO_CONTA_EXISTENTE(400,100,"Número de conta já existe"),
+    // Erros de Conta (Faixa 100-109)
+    SALDO_NEGATIVO_NULO(400,100,"Saldo não pode ser null ou menor que zero"),
 
     CLIENTE_NAO_LOGADO(401,101,"Cliente não está autenticado no sistema"), // 401 faz mais sentido para Não Logado
 

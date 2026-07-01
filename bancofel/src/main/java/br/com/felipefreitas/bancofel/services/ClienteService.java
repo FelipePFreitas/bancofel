@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
 @Service
@@ -25,6 +24,7 @@ public class ClienteService {
 
     private final ClienteRepository clienteRepository;
     private final ContaRepository contaRepository;
+    private final ContaService contaService;
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     @Transactional
@@ -100,37 +100,13 @@ public class ClienteService {
         }
         Cliente clienteSalvo = clienteRepository.save(cliente);
 
-        String numeroConta;
-        boolean contaJaExiste;
-
-        do {
-            // 1. Gera um número aleatório (ex: "482934")
-            numeroConta = gerarNumeroConta();
-
-            // 2. Vai no banco de dados e checa se já existe alguma conta com esse número
-            contaJaExiste = contaRepository.existsByNumeroConta(numeroConta);
-
-            if (contaJaExiste) {
-                log.warn("O número de conta {} gerado já existe no banco. Tentando gerar outro...", numeroConta);
-            }
-
-        } while (contaJaExiste); // 3. Se existir, o loop repete, gera outro número e testa de novo.
-
-        Conta novaConta = new Conta(numeroConta, "0001", BigDecimal.ZERO, clienteSalvo);
-
-        contaRepository.save(novaConta);
+        Conta novaConta = contaService.criarConta(clienteSalvo, BigDecimal.ZERO);
 
 
-        log.info("Cliente com CPF: {} cadastrado com sucesso! Conta bancária gerada: {}", clienteSalvo.getCpf(), numeroConta);
+        log.info("Cliente com CPF: {} cadastrado com sucesso! Conta bancária gerada: {}", clienteSalvo.getCpf(),
+                novaConta.getNumeroConta());
     }
 
-    public String gerarNumeroConta() {
-        // Gera um número aleatório entre 0 e 999999
-        int numero = ThreadLocalRandom.current().nextInt(0, 10000000);
-
-        // Converte o int diretamente para String
-        return String.format("%06d", numero);
-    }
 
     @Transactional(readOnly = true)
     public ClienteDTO pesquisaClienteCpf(String cpf) {
