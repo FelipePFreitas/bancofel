@@ -2,6 +2,7 @@ package br.com.felipefreitas.bancofel.services;
 
 import br.com.felipefreitas.bancofel.entity.ClientePF;
 import br.com.felipefreitas.bancofel.entity.Conta;
+import br.com.felipefreitas.bancofel.enums.ClienteTipo;
 import br.com.felipefreitas.bancofel.enums.ErrorEnum;
 import br.com.felipefreitas.bancofel.interfaces.ClienteImpl;
 import br.com.felipefreitas.bancofel.repository.ClienteRepository;
@@ -26,6 +27,11 @@ public class ClientePFService implements ClienteImpl<ClientePF> {
     @Transactional
     public ClientePF cadastrarCliente(ClientePF cliente) {
         log.info("Iniciando cadastro do cliente com CPF: {}", cliente.getCpf());
+
+        if (cliente.getClienteTipo() != ClienteTipo.PESSOA_FISICA) {
+            throw new RuntimeException(ErrorEnum.TIPO_CLIENTE_INVALIDO.getErrorMessage());
+        }
+
         if (cliente.getNome() == null || cliente.getNome().isBlank()) {
             throw new RuntimeException(ErrorEnum.NULO_BRANCO.getErrorMessage());
         }
@@ -33,6 +39,7 @@ public class ClientePFService implements ClienteImpl<ClientePF> {
         if (cliente.getNome().length() > 100) {
             throw new RuntimeException(ErrorEnum.CARACTERES_ACIMA.getErrorMessage());
         }
+
 
         if (cliente.getCpf() == null || cliente.getCpf().isBlank()) {
             throw new RuntimeException(ErrorEnum.CPF_NULO_BRANCO.getErrorMessage());

@@ -1,9 +1,8 @@
 package br.com.felipefreitas.bancofel.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.PrimaryKeyJoinColumn;
-import jakarta.persistence.Table;
+import br.com.felipefreitas.bancofel.enums.ClienteTipo;
+import br.com.felipefreitas.bancofel.enums.TipoTransacao;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,4 +27,5 @@ public class ClientePF extends Cliente {
 
     @Column(nullable = false)
     private LocalDate dataNascimento;
+
 }

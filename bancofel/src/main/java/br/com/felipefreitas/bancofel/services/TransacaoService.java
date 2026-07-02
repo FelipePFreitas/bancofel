@@ -24,7 +24,7 @@ public class TransacaoService {
     @Transactional
     public BigDecimal saque(String numeroConta, BigDecimal valorSaque) {
         Conta conta =
-                contaRepository.findBynumeroConta(numeroConta).orElseThrow(() -> new RuntimeException(ErrorEnum.NUMERO_CONTA_NAO_EXISTE.getErrorMessage()));
+                contaRepository.findByNumeroConta(numeroConta).orElseThrow(() -> new RuntimeException(ErrorEnum.NUMERO_CONTA_NAO_EXISTE.getErrorMessage()));
 
         if (valorSaque == null || valorSaque.compareTo(BigDecimal.ZERO) <= 0) {
             throw new RuntimeException(ErrorEnum.SAQUE_NULO_ZERO.getErrorMessage());
@@ -50,7 +50,7 @@ public class TransacaoService {
 
     @Transactional
     public BigDecimal deposito(String numeroConta, BigDecimal valorDeposito) {
-        Conta conta = contaRepository.findBynumeroConta(numeroConta).orElseThrow(() -> new RuntimeException(ErrorEnum.NUMERO_CONTA_NAO_EXISTE.getErrorMessage()));
+        Conta conta = contaRepository.findByNumeroConta(numeroConta).orElseThrow(() -> new RuntimeException(ErrorEnum.NUMERO_CONTA_NAO_EXISTE.getErrorMessage()));
 
         if (valorDeposito == null || valorDeposito.compareTo(BigDecimal.ZERO) <= 0) {
             throw new RuntimeException(ErrorEnum.DEPOSITO_NULO_ZERO.getErrorMessage());
@@ -78,10 +78,10 @@ public class TransacaoService {
     public void transferencia(String contaOrigem, String contaDestino, BigDecimal valorTransferencia) {
 
         Conta conta1 =
-                contaRepository.findBynumeroConta(contaOrigem).orElseThrow(() -> new RuntimeException(ErrorEnum.NUMERO_CONTA_NAO_EXISTE.getErrorMessage()));
+                contaRepository.findByNumeroConta(contaOrigem).orElseThrow(() -> new RuntimeException(ErrorEnum.NUMERO_CONTA_NAO_EXISTE.getErrorMessage()));
 
         Conta conta2 =
-                contaRepository.findBynumeroConta(contaDestino).orElseThrow(() -> new RuntimeException(ErrorEnum.NUMERO_CONTA_NAO_EXISTE.getErrorMessage()));
+                contaRepository.findByNumeroConta(contaDestino).orElseThrow(() -> new RuntimeException(ErrorEnum.NUMERO_CONTA_NAO_EXISTE.getErrorMessage()));
 
         if (valorTransferencia == null || valorTransferencia.compareTo(BigDecimal.ZERO) <= 0) {
             throw new RuntimeException(ErrorEnum.SALDO_NEGATIVO_NULO.getErrorMessage());

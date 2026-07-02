@@ -1,5 +1,6 @@
 package br.com.felipefreitas.bancofel.entity;
 
+import br.com.felipefreitas.bancofel.enums.ClienteTipo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -48,4 +49,8 @@ public abstract class Cliente {
 
     @Column(nullable = false)
     private boolean status = true;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ClienteTipo clienteTipo;
 }

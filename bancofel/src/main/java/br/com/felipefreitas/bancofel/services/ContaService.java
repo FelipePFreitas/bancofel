@@ -7,6 +7,7 @@ import br.com.felipefreitas.bancofel.repository.ContaRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.concurrent.ThreadLocalRandom;
@@ -59,10 +60,11 @@ public class ContaService {
         return String.format("%06d", numero);
     }
 
+    @Transactional(readOnly = true)
     public BigDecimal consultarSaldo(String numeroConta) {
 
         Conta conta =
-                contaRepository.findBynumeroConta(numeroConta).orElseThrow(() -> new RuntimeException(ErrorEnum.NUMERO_CONTA_NAO_EXISTE.getErrorMessage()));
+                contaRepository.findByNumeroConta(numeroConta).orElseThrow(() -> new RuntimeException(ErrorEnum.NUMERO_CONTA_NAO_EXISTE.getErrorMessage()));
 
         return conta.getSaldo();
     }
