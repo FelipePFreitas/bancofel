@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum ErrorEnum {
-    // Erros de Cliente (Faixa 0-9)
+    // Erros de Cliente (Faixa 0-9) - 400 Bad Request (Dados mal formatados)
     CPF_INVALIDO(400, 0, "CPF inválido"),
     CLIENTE_JA_CADASTRADO(400, 1, "Cadastro do cliente já existente"),
     CARACTERES_ACIMA(400, 2, "Excesso de caracteres"),
@@ -15,15 +15,14 @@ public enum ErrorEnum {
     TIPO_CLIENTE_INVALIDO(400, 7, "Tipo de cliente inválido"),
 
     // Erros de Conta (Faixa 100-109)
-    SALDO_NEGATIVO_NULO(400,100,"Saldo não pode ser null ou menor que zero"),
-    NUMERO_CONTA_NAO_EXISTE(401,101,"Número da conta não existe"), // 401 faz mais sentido para Não Logado
-    SALDO_INSUFICIENTE(403,104,"Saldo insuficiente para transferência"), // 403 é o padrão para
-    // Acesso Negado
+    SALDO_NEGATIVO_NULO(400, 100, "Saldo não pode ser null ou menor que zero"),
+    NUMERO_CONTA_NAO_EXISTE(404, 101, "Número da conta não existe"), // ✨ Corrigido para 404 Not Found
+    SALDO_INSUFICIENTE(422, 104, "Saldo insuficiente para transferência"), // ✨ Corrigido para 422 Unprocessable Entity
 
     // Erros de Transação (Faixa 200+)
-    SAQUE_NULO_ZERO(400,200,"Valor de saque não pode ser nulo ou menor e igual que zero"),
-    SAQUE_VALOR_MAIOR_SALDO(400,201,"Valor de saque maior que saldo atual"),
-    DEPOSITO_NULO_ZERO(400,202,"Valor de deposito não pode ser nulo ou menor e igual que zero");
+    SAQUE_NULO_ZERO(400, 200, "Valor de saque não pode ser nulo ou menor e igual que zero"),
+    SAQUE_VALOR_MAIOR_SALDO(422, 201, "Valor de saque maior que saldo atual"), // ✨ Corrigido para 422 Unprocessable Entity
+    DEPOSITO_NULO_ZERO(400, 202, "Valor de deposito não pode ser nulo ou menor e igual que zero");
 
     private final int httpStatus;
     private final int errorCode;
@@ -34,4 +33,4 @@ public enum ErrorEnum {
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
     }
-    }
+}
